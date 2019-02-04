@@ -1,7 +1,8 @@
 tool
 extends MeshInstance
 
-export(bool) var fan = false setget _fan
+export(bool) var fan = true setget _fan
+export(bool) var base = true setget _base
 export(float) var definition = 16 setget _definition
 export(float) var split = 0 setget _split
 
@@ -10,6 +11,11 @@ var vertices = null
 
 func _fan( f ):
 	fan = f
+	if processed_once:
+		cone_create()
+
+func _base( b ):
+	base = b
 	if processed_once:
 		cone_create()
 
@@ -63,8 +69,9 @@ func cone_create():
 			vertices.append( Vector3( cosa, -1, sina ) )
 			vertices.append( Vector3( -cosa, -1, -sina ) )
 		
-		vertices.append( Vector3( cosa, -1, sina ) )
-		vertices.append( Vector3( cosb, -1, sinb ) )
+		if base:
+			vertices.append( Vector3( cosa, -1, sina ) )
+			vertices.append( Vector3( cosb, -1, sinb ) )
 		
 		a = b
 		cosa = cosb
